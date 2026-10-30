@@ -24,24 +24,22 @@ st.markdown("""
         border: 1px solid #30363d;
     }
     div[data-testid="stNumberInput"] {
-        max-width: 180px;
+        max-width: 100px;
         margin-left: auto;
+        margin-top: 0px;
+        margin-bottom: 0px;
     }
     div[data-testid="stNumberInput"] label {
-        font-size: 12px;
-        font-weight: 600;
+        display: none;
     }
     div[data-testid="stNumberInput"] > div {
         width: 100%;
         min-width: 0;
     }
     div[data-testid="stNumberInput"] input {
-        font-size: 14px;
-        padding: 6px 8px;
-        height: 38px;
-    }
-    .top-status {
-        margin-top: 6px;
+        font-size: 12px;
+        padding: 3px 5px;
+        height: 28px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -63,6 +61,12 @@ with st.sidebar:
 
 # Main Dashboard Header
 st.markdown("## 📊 Nifty Options - Live Terminal")
+
+# Top-right compact lot size box
+header_left, header_right = st.columns([5, 1])
+with header_right:
+    lot_size = st.number_input("Lot Size", min_value=1, max_value=50, value=1, step=1, label_visibility="collapsed")
+
 st.markdown("---")
 
 # Signal Card
@@ -74,12 +78,8 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Lot Size & Live Market Row
-col_info, col_lot = st.columns([4, 1])
-with col_info:
-    st.info("💡 **Market Status:** Live feed connected successfully. Ready for execution.", icon="💡")
-with col_lot:
-    lot_size = st.number_input("Lot Size", min_value=1, max_value=50, value=1, step=1)
+# Market Status Row only below signal
+st.info("💡 **Market Status:** Live feed connected successfully. Ready for execution.", icon="💡")
 
 # Price Breakdown Cards
 c1, c2, c3 = st.columns(3)
