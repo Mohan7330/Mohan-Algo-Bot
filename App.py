@@ -24,7 +24,7 @@ st.markdown("""
         border: 1px solid #30363d;
     }
     div[data-testid="stNumberInput"] {
-        max-width: 110px;
+        max-width: 120px;
         margin-left: auto;
         margin-top: 0px;
         margin-bottom: 0px;
