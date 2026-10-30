@@ -44,12 +44,19 @@ st.markdown("""
         font-size: 12px;
         padding: 3px 5px;
         height: 28px;
+        border: 1px solid #3fb950;
+        border-radius: 6px;
+        background-color: #0b0e14;
+        color: white;
     }
     div[data-testid="stNumberInput"] button {
         width: 22px;
         min-width: 22px;
         height: 22px;
         padding: 0;
+        border: 1px solid #3fb950;
+        color: #3fb950;
+        background-color: #0b0e14;
     }
     </style>
 """, unsafe_allow_html=True)
