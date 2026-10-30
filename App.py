@@ -23,40 +23,49 @@ st.markdown("""
         text-align: center;
         border: 1px solid #30363d;
     }
-    div[data-testid="stNumberInput"] {
-        max-width: 120px;
+    .lot-box {
+        width: 126px;
         margin-left: auto;
-        margin-top: 0px;
-        margin-bottom: 0px;
+        border: 1px solid #3fb950;
+        border-radius: 8px;
+        background: #0b0e14;
+        padding: 6px 8px 8px 8px;
     }
-    div[data-testid="stNumberInput"] label {
-        display: block;
+    .lot-label {
         font-size: 11px;
         font-weight: 600;
         color: #8b949e;
-        margin-bottom: 4px;
+        text-align: center;
+        margin-bottom: 6px;
     }
-    div[data-testid="stNumberInput"] > div {
-        width: 100%;
-        min-width: 0;
+    .lot-controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
     }
-    div[data-testid="stNumberInput"] input {
-        font-size: 12px;
-        padding: 3px 5px;
-        height: 28px;
-        border: 1px solid #3fb950;
-        border-radius: 6px;
-        background-color: #0b0e14;
+    .lot-value {
+        width: 44px;
+        text-align: center;
+        font-size: 13px;
+        font-weight: 600;
         color: white;
+        border: 1px solid #3fb950;
+        border-radius: 5px;
+        padding: 3px 0;
+        background: #10151b;
     }
-    div[data-testid="stNumberInput"] button {
-        width: 22px;
-        min-width: 22px;
-        height: 22px;
+    div[data-testid="stButton"] button {
+        width: 24px;
+        min-width: 24px;
+        height: 24px;
         padding: 0;
         border: 1px solid #3fb950;
+        border-radius: 5px;
         color: #3fb950;
-        background-color: #0b0e14;
+        background: #0b0e14;
+        font-size: 18px;
+        line-height: 1;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -79,10 +88,25 @@ with st.sidebar:
 # Main Dashboard Header
 st.markdown("## 📊 Nifty Options - Live Terminal")
 
-# Top-right compact lot size box
-header_left, header_right = st.columns([5, 1])
+# Top-right compact lot size box with visible + / - controls
+if "lot_size" not in st.session_state:
+    st.session_state.lot_size = 1
+
+header_left, header_right = st.columns([5, 1.6])
 with header_right:
-    lot_size = st.number_input("Lot Size", min_value=1, max_value=50, value=1, step=1)
+    st.markdown("<div class='lot-box'>", unsafe_allow_html=True)
+    col_label, col_minus, col_value, col_plus = st.columns([1.4, 0.7, 1.0, 0.7])
+    with col_label:
+        st.markdown("<div class='lot-label'>Lot Size</div>", unsafe_allow_html=True)
+    with col_minus:
+        if st.button("−", key="lot_minus"):
+            st.session_state.lot_size = max(1, st.session_state.lot_size - 1)
+    with col_value:
+        st.markdown(f"<div class='lot-value'>{st.session_state.lot_size}</div>", unsafe_allow_html=True)
+    with col_plus:
+        if st.button("+", key="lot_plus"):
+            st.session_state.lot_size = min(50, st.session_state.lot_size + 1)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown("---")
 
@@ -143,7 +167,7 @@ st.markdown("---")
 # Trade History / Log Table
 st.markdown("### 📜 Trade History")
 trade_history = pd.DataFrame([
-    {"Time": "09:30:12", "Type": "CE", "Buy Price": 123.03, "SL": 93.65, "Target": 153.65, "Status": "Active", "P&L": "₹0.00"},
+    {"Time": "09:30:12", "Type": "CE", "Buy Price": 123.03, "SL": 93.65, "Target": 153.65, "Status": "Active", "P&L": "���0.00"},
     {"Time": "10:15:40", "Type": "PE", "Buy Price": 115.50, "SL": 85.50, "Target": 145.50, "Status": "Closed", "P&L": "+₹750.00"}
 ])
 st.dataframe(trade_history, use_container_width=True)
