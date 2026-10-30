@@ -24,7 +24,7 @@ st.markdown("""
         border: 1px solid #30363d;
     }
     .lot-box {
-        width: 140px;
+        width: 150px;
         margin-left: auto;
         border: 1px solid #3fb950;
         border-radius: 8px;
@@ -46,7 +46,7 @@ st.markdown("""
         gap: 8px;
     }
     .lot-value {
-        width: 44px;
+        width: 48px;
         text-align: center;
         font-size: 13px;
         font-weight: 700;
@@ -90,16 +90,15 @@ with st.sidebar:
 # Main Dashboard Header
 st.markdown("## 📊 Nifty Options - Live Terminal")
 
-# Single compact lot-size box with label, value, and + / - in one container
+# Single lot-size box aligned to top-right
 if "lot_size" not in st.session_state:
     st.session_state.lot_size = 1
 
-header_left, header_right = st.columns([5, 1.6])
+header_left, header_right = st.columns([5, 1.5])
 with header_right:
     st.markdown("<div class='lot-box'>", unsafe_allow_html=True)
-    col_label, col_minus, col_value, col_plus = st.columns([1.3, 0.7, 1.0, 0.7])
-    with col_label:
-        st.markdown("<div class='lot-label'>Lot Size</div>", unsafe_allow_html=True)
+    st.markdown("<div class='lot-label'>Lot Size</div>", unsafe_allow_html=True)
+    col_minus, col_value, col_plus = st.columns([0.7, 1.0, 0.7])
     with col_minus:
         if st.button("−", key="lot_minus"):
             st.session_state.lot_size = max(1, st.session_state.lot_size - 1)
