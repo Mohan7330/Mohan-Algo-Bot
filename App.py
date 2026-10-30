@@ -18,65 +18,10 @@ st.markdown("""
     }
     .metric-box {
         background-color: #21262d;
-        padding: 18px 12px;
-        border-radius: 10px;
+        padding: 15px;
+        border-radius: 8px;
         text-align: center;
         border: 1px solid #30363d;
-        min-height: 120px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
-    }
-    .price-frame {
-        background-color: #161b22;
-        border: 1px solid #30363d;
-        border-radius: 14px;
-        padding: 18px;
-        margin: 10px 0 18px 0;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
-        width: 100%;
-    }
-    .price-row {
-        display: flex;
-        flex-direction: row;
-        gap: 16px;
-        width: 100%;
-    }
-    .price-card {
-        flex: 1 1 0;
-        min-width: 0;
-        background-color: #21262d;
-        border: 1px solid #30363d;
-        border-radius: 10px;
-        padding: 18px 14px;
-        text-align: center;
-        min-height: 110px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-    .price-label {
-        color: #8b949e;
-        margin: 0 0 8px 0;
-        font-size: 14px;
-        letter-spacing: 0.3px;
-    }
-    .price-value {
-        margin: 0;
-        font-size: clamp(1.4rem, 2vw, 2.1rem);
-        font-weight: 700;
-        line-height: 1.2;
-    }
-    .price-subtext {
-        font-size: 12px;
-        color: #8b949e;
-        margin-top: 8px;
-    }
-    @media (max-width: 768px) {
-        .price-row {
-            flex-direction: column;
-        }
     }
     </style>
 """, unsafe_allow_html=True)
@@ -117,27 +62,34 @@ with col_info:
     st.info("💡 **Market Status:** Live feed connected successfully. Ready for execution.")
 
 # Price Breakdown Cards
-st.markdown("""
-<div class="price-frame">
-    <div class="price-row">
-        <div class="price-card">
-            <p class="price-label">Buying Price</p>
-            <h3 class="price-value" style="color: #58a6ff;">₹123.03</h3>
-            <span class="price-subtext">LTP: ₹123.03</span>
+c1, c2, c3 = st.columns(3)
+
+with c1:
+    st.markdown("""
+        <div class="metric-box">
+            <p style="color: #8b949e; margin: 0;">Buying Price</p>
+            <h3 style="color: #58a6ff; margin: 5px 0 0 0;">₹123.03</h3>
+            <span style="font-size: 12px; color: #8b949e;">LTP: ₹123.03</span>
         </div>
-        <div class="price-card">
-            <p class="price-label">Stop Loss (SL)</p>
-            <h3 class="price-value" style="color: #f85149;">₹93.65</h3>
-            <span class="price-subtext">(-30 Points)</span>
+    """, unsafe_allow_html=True)
+
+with c2:
+    st.markdown("""
+        <div class="metric-box">
+            <p style="color: #8b949e; margin: 0;">Stop Loss (SL)</p>
+            <h3 style="color: #f85149; margin: 5px 0 0 0;">₹93.65</h3>
+            <span style="font-size: 12px; color: #8b949e;">(-30 Points)</span>
         </div>
-        <div class="price-card">
-            <p class="price-label">Target</p>
-            <h3 class="price-value" style="color: #3fb950;">₹153.65</h3>
-            <span class="price-subtext">(+30 Points)</span>
+    """, unsafe_allow_html=True)
+
+with c3:
+    st.markdown("""
+        <div class="metric-box">
+            <p style="color: #8b949e; margin: 0;">Target</p>
+            <h3 style="color: #3fb950; margin: 5px 0 0 0;">₹153.65</h3>
+            <span style="font-size: 12px; color: #8b949e;">(+30 Points)</span>
         </div>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
