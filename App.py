@@ -24,12 +24,13 @@ st.markdown("""
         border: 1px solid #30363d;
     }
     .lot-box {
-        width: 126px;
+        width: 140px;
         margin-left: auto;
         border: 1px solid #3fb950;
         border-radius: 8px;
         background: #0b0e14;
-        padding: 6px 8px 8px 8px;
+        padding: 8px 8px 10px 8px;
+        box-sizing: border-box;
     }
     .lot-label {
         font-size: 11px;
@@ -48,11 +49,11 @@ st.markdown("""
         width: 44px;
         text-align: center;
         font-size: 13px;
-        font-weight: 600;
+        font-weight: 700;
         color: white;
         border: 1px solid #3fb950;
         border-radius: 5px;
-        padding: 3px 0;
+        padding: 4px 0;
         background: #10151b;
     }
     div[data-testid="stButton"] button {
@@ -66,6 +67,7 @@ st.markdown("""
         background: #0b0e14;
         font-size: 18px;
         line-height: 1;
+        font-weight: 700;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -88,14 +90,14 @@ with st.sidebar:
 # Main Dashboard Header
 st.markdown("## 📊 Nifty Options - Live Terminal")
 
-# Top-right compact lot size box with visible + / - controls
+# Single compact lot-size box with label, value, and + / - in one container
 if "lot_size" not in st.session_state:
     st.session_state.lot_size = 1
 
 header_left, header_right = st.columns([5, 1.6])
 with header_right:
     st.markdown("<div class='lot-box'>", unsafe_allow_html=True)
-    col_label, col_minus, col_value, col_plus = st.columns([1.4, 0.7, 1.0, 0.7])
+    col_label, col_minus, col_value, col_plus = st.columns([1.3, 0.7, 1.0, 0.7])
     with col_label:
         st.markdown("<div class='lot-label'>Lot Size</div>", unsafe_allow_html=True)
     with col_minus:
@@ -167,7 +169,7 @@ st.markdown("---")
 # Trade History / Log Table
 st.markdown("### 📜 Trade History")
 trade_history = pd.DataFrame([
-    {"Time": "09:30:12", "Type": "CE", "Buy Price": 123.03, "SL": 93.65, "Target": 153.65, "Status": "Active", "P&L": "���0.00"},
+    {"Time": "09:30:12", "Type": "CE", "Buy Price": 123.03, "SL": 93.65, "Target": 153.65, "Status": "Active", "P&L": "₹0.00"},
     {"Time": "10:15:40", "Type": "PE", "Buy Price": 115.50, "SL": 85.50, "Target": 145.50, "Status": "Closed", "P&L": "+₹750.00"}
 ])
 st.dataframe(trade_history, use_container_width=True)
