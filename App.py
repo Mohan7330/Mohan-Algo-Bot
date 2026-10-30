@@ -25,7 +25,8 @@ st.markdown("""
     }
     /* Custom styling to make number_input look like a sleek trading counter */
     [data-testid="stNumberInput"] {
-        max-width: 220px;
+        max-width: 100%;
+        width: 100%;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -58,17 +59,17 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Lot Size & Buy Action Row (Horizontal Layout)
-col_lot, col_action = st.columns([1, 2])
+# Lot Size & Buy Action Row (Top Right Layout)
+lot_action_col, lot_size_col = st.columns([2.5, 1.1])
 
-with col_lot:
-    st.markdown("**Lot Size**")
-    lot_size = st.number_input("", min_value=1, max_value=500, value=65, step=1, label_visibility="collapsed")
-
-with col_action:
+with lot_action_col:
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("🟢 Buy at limit", use_container_width=True):
         st.success(f"Order Placed for {lot_size} Lots!")
+
+with lot_size_col:
+    st.markdown("<div style='text-align: right; font-weight: 600; margin-top: 8px;'>Lot Size</div>", unsafe_allow_html=True)
+    lot_size = st.number_input("", min_value=1, max_value=500, value=65, step=1, label_visibility="collapsed", use_container_width=True)
 
 st.markdown("---")
 
