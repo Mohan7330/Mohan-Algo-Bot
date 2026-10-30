@@ -24,13 +24,17 @@ st.markdown("""
         border: 1px solid #30363d;
     }
     div[data-testid="stNumberInput"] {
-        max-width: 100px;
+        max-width: 110px;
         margin-left: auto;
         margin-top: 0px;
         margin-bottom: 0px;
     }
     div[data-testid="stNumberInput"] label {
-        display: none;
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        color: #8b949e;
+        margin-bottom: 4px;
     }
     div[data-testid="stNumberInput"] > div {
         width: 100%;
@@ -40,6 +44,12 @@ st.markdown("""
         font-size: 12px;
         padding: 3px 5px;
         height: 28px;
+    }
+    div[data-testid="stNumberInput"] button {
+        width: 22px;
+        min-width: 22px;
+        height: 22px;
+        padding: 0;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -65,7 +75,7 @@ st.markdown("## 📊 Nifty Options - Live Terminal")
 # Top-right compact lot size box
 header_left, header_right = st.columns([5, 1])
 with header_right:
-    lot_size = st.number_input("Lot Size", min_value=1, max_value=50, value=1, step=1, label_visibility="collapsed")
+    lot_size = st.number_input("Lot Size", min_value=1, max_value=50, value=1, step=1)
 
 st.markdown("---")
 
