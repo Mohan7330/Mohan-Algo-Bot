@@ -23,6 +23,26 @@ st.markdown("""
         text-align: center;
         border: 1px solid #30363d;
     }
+    div[data-testid="stNumberInput"] {
+        max-width: 180px;
+        margin-left: auto;
+    }
+    div[data-testid="stNumberInput"] label {
+        font-size: 12px;
+        font-weight: 600;
+    }
+    div[data-testid="stNumberInput"] > div {
+        width: 100%;
+        min-width: 0;
+    }
+    div[data-testid="stNumberInput"] input {
+        font-size: 14px;
+        padding: 6px 8px;
+        height: 38px;
+    }
+    .top-status {
+        margin-top: 6px;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -55,11 +75,11 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Lot Size & Live Market Row
-col_lot, col_info = st.columns([1, 3])
+col_info, col_lot = st.columns([4, 1])
+with col_info:
+    st.info("💡 **Market Status:** Live feed connected successfully. Ready for execution.", icon="💡")
 with col_lot:
     lot_size = st.number_input("Lot Size", min_value=1, max_value=50, value=1, step=1)
-with col_info:
-    st.info("💡 **Market Status:** Live feed connected successfully. Ready for execution.")
 
 # Price Breakdown Cards
 c1, c2, c3 = st.columns(3)
