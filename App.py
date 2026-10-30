@@ -1,92 +1,85 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from datetime import datetime
+import time
 
-# Page Configuration for Mobile Friendly Dashboard
-st.set_page_config(page_title="Mohan Algo Dashboard", layout="wide")
+# Page Setup
+st.set_page_config(page_title="Nifty F&O Smart Dashboard", layout="centered")
 
-st.title("🚀 Mohan's F&O Smart Trading Dashboard (Paper Trading)")
-st.markdown("---")
+# Custom CSS for Mobile Styling
+st.markdown("""
+    <style>
+    .main { background-color: #0e1117; }
+    .stMetric { background-color: #1e222d; padding: 10px; border-radius: 8px; }
+    .card { background-color: #1e222d; padding: 15px; border-radius: 10px; margin-bottom: 10px; }
+    .buy-card { border-left: 5px solid #26a69a; }
+    .status-text { font-size: 18px; font-weight: bold; }
+    </style>
+""", unsafe_allow_dict, scope="global")
 
-# Sidebar Controls for Bot Status
-st.sidebar.header("Bot Control Panel")
-bot_status = st.sidebar.radio("Bot Status", ["OFF", "ON"])
-market_mode = st.sidebar.selectbox("Market Condition Mode", ["Auto Detect (Trend / Range)", "Forced Trend", "Forced Sideways"])
+st.title("⚡ Nifty F&O Smart Dashboard")
 
-# Initialize Session State for Signal Logs & Live Tracking
-if 'signal_logs' not in st.session_state:
-    st.session_state['signal_logs'] = pd.DataFrame(columns=[
-        'BUY TIME', 'CONTRACT', 'SCORE', 'BUY PRICE', 'STOP LOSS', 'TARGET', 'SELL PRICE', 'SELL TIME', 'RESULT', 'P&L'
-    ])
-
-if 'active_trade' not in st.session_state:
-    st.session_state['active_trade'] = None
-
-# Main Dashboard Layout
-col1, col2, col3, col4 = st.columns(4)
-col1.metric("Bot Status", bot_status, "Active" if bot_status == "ON" else "Paused")
-col2.metric("Active Trades", "1" if st.session_state['active_trade'] else "0")
-col3.metric("Total P&L (Paper)", "₹ +1,450", "+12%")
-col4.metric("Win Rate", "55.2%", "Target/SL: 30 Pts")
-
-st.markdown("### 📊 Live Tracking & Market Analysis")
-
-# Logic Simulation & Metrics Display
-if bot_status == "ON":
-    st.info("🤖 Bot is actively scanning Nifty 50 5-min candles, S&R, Volume, RSI, ATR & ADX...")
-    
-    # Simulating Live Tracking Box (like friend's dashboard)
-    if st.session_state['active_trade'] is None:
-        # Let's simulate a triggered trade based on user logic
-        current_time = datetime.now().strftime("%d Oct, %H:%M")
-        st.session_state['active_trade'] = {
-            'buy_time': current_time,
-            'contract': 'Nifty 23050 CE',
-            'score': 75,
-            'buy_price': 123.65,
-            'stop_loss': 93.65,    # Exactly 30 points SL
-            'target': 153.65,       # Exactly 30 points Target
-            'now_price': 130.50
-        }
-    
-    trade = st.session_state['active_trade']
-    
-    st.markdown(f"""
-    <div style="background-color: #1e293b; padding: 20px; border-radius: 10px; color: white;">
-        <h4>Tracking: {trade['contract']} | Score: {trade['score']}/100</h4>
-        <p><b>Buy Price:</b> ₹{trade['buy_price']} | <b>Stop Loss (30 Pts):</b> ₹{trade['stop_loss']} | <b>Target (30 Pts):</b> ₹{trade['target']}</p>
-        <p><b>Current Live Price:</b> ₹{trade['now_price']}</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    if st.button("Simulate Exit (Hit Target / SL)"):
-        # Move active trade to logs
-        sell_time = datetime.now().strftime("%d Oct, %H:%M")
-        new_log = {
-            'BUY TIME': trade['buy_time'],
-            'CONTRACT': trade['contract'],
-            'score': trade['score'],
-            'BUY PRICE': trade['buy_price'],
-            'STOP LOSS': trade['stop_loss'],
-            'TARGET': trade['target'],
-            'SELL PRICE': trade['target'], # Assuming target hit
-            'SELL TIME': sell_time,
-            'RESULT': 'target',
-            'P&L': '+₹1,500'
-        }
-        st.session_state['signal_logs'] = pd.concat([pd.DataFrame([new_log]), st.session_state['signal_logs']], ignore_index=True)
-        st.session_state['active_trade'] = None
-        st.rerun()
-
-else:
-    st.warning("⚠️ Bot is currently OFF. Switch to ON from the sidebar to start live paper tracking.")
+# Top Header: Market Signal & Lot Size
+with st.container():
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        st.markdown("### 📊 Present Market Signal")
+        st.info("💡 **Signal:** Buy **NIFTY 24200 CE** @ **₹145.00**")
+    with col2:
+        lot_size = st.number_input("Lot Size", min_value=1, max_value=50, value=1, step=1)
 
 st.markdown("---")
-st.markdown("### 📝 Signal Log & History Table")
 
-# Display Signal Log Table
-if not st.session_state['signal_logs'].empty:
-    st.dataframe(st.session_state['signal_logs'], use_container_width=True)
-else:
-    st.info("No closed trades yet. Once trades hit 30 Pts Target or 30 Pts Stop Loss, they will log here automatically.")
+# Active Trade Details
+st.markdown("### 🎯 Active Trade Monitor")
+
+buy_price = 145.0
+sl_price = 115.0  # 30 pts SL
+target_price = 175.0  # 30 pts Target
+current_price = 162.0  # Simulated Live Price
+
+# Calculate progress towards target
+total_range = target_price - buy_price
+current_gain = current_price - buy_price
+progress_percent = min(max(current_gain / total_range, 0.0), 1.0)
+points_to_target = target_price - current_price
+rupees_to_target = points_to_target * (lot_size * 25)
+
+col_a, col_b, col_c = st.columns(3)
+col_a.metric("Buying Price", f"₹{buy_price}")
+col_b.metric("Stop Loss (SL)", f"₹{sl_price}")
+col_c.metric("Target", f"₹{target_price}")
+
+# Target Progress Bar
+st.markdown(f"**Target Progress:** ({int(progress_percent * 100)}% Reached)")
+st.progress(progress_percent)
+
+# Live Status Banner
+st.success(f"📈 **Live Market:** Current Price **₹{current_price}** | Target కి ఇంకా **{points_to_target:.1f} Points (₹{rupees_to_target:,.0f})** దూరంలో ఉంది!")
+
+st.markdown("---")
+
+# Trade History Table
+st.markdown("### 📜 Trade Log")
+
+trade_data = pd.DataFrame([
+    {
+        "Buying Time": "09:30 AM",
+        "Type": "CE",
+        "Buying Price": 145.0,
+        "SL": 115.0,
+        "Target": 175.0,
+        "Profit / Loss": "+₹425.00 (Live)"
+    },
+    {
+        "Buying Time": "10:15 AM",
+        "Type": "PE",
+        "Buying Price": 120.0,
+        "SL": 90.0,
+        "Target": 150.0,
+        "Profit / Loss": "+₹750.00"
+    }
+])
+
+st.dataframe(trade_data, use_container_width=True)
+
