@@ -35,16 +35,17 @@ st.markdown("""
         padding: 18px;
         margin: 10px 0 18px 0;
         box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
-        max-width: 420px;
+        width: 100%;
     }
     .price-row {
         display: flex;
-        flex-direction: column;
-        gap: 12px;
+        flex-direction: row;
+        gap: 16px;
         width: 100%;
     }
     .price-card {
-        width: 100%;
+        flex: 1 1 0;
+        min-width: 0;
         background-color: #21262d;
         border: 1px solid #30363d;
         border-radius: 10px;
@@ -73,8 +74,8 @@ st.markdown("""
         margin-top: 8px;
     }
     @media (max-width: 768px) {
-        .price-frame {
-            max-width: 100%;
+        .price-row {
+            flex-direction: column;
         }
     }
     </style>
